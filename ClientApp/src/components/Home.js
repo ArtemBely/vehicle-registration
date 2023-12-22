@@ -1,26 +1,89 @@
 import React, { Component } from 'react';
+import { CssBaseline, Box, AppBar, Toolbar, Typography, Container, Paper, Grid, Button, Tooltip } from '@mui/material';
+import { Check as CheckIcon, Clear as ClearIcon } from '@mui/icons-material';
+import { green, red } from '@mui/material/colors';
+import { NavLink } from 'react-router-dom';
+
 
 export class Home extends Component {
-  static displayName = Home.name;
 
-  render() {
-    return (
-      <div>
-        <h1>Hello, world!</h1>
-        <p>Welcome to your new single-page application, built with:</p>
-        <ul>
-          <li><a href='https://get.asp.net/'>ASP.NET Core</a> and <a href='https://msdn.microsoft.com/en-us/library/67ef8sbd.aspx'>C#</a> for cross-platform server-side code</li>
-          <li><a href='https://facebook.github.io/react/'>React</a> for client-side code</li>
-          <li><a href='http://getbootstrap.com/'>Bootstrap</a> for layout and styling</li>
-        </ul>
-        <p>To help you get started, we have also set up:</p>
-        <ul>
-          <li><strong>Client-side navigation</strong>. For example, click <em>Counter</em> then <em>Back</em> to return here.</li>
-          <li><strong>Development server integration</strong>. In development mode, the development server from <code>create-react-app</code> runs in the background automatically, so your client-side resources are dynamically built on demand and the page refreshes when you modify any file.</li>
-          <li><strong>Efficient production builds</strong>. In production mode, development-time features are disabled, and your <code>dotnet publish</code> configuration produces minified, efficiently bundled JavaScript files.</li>
-        </ul>
-        <p>The <code>ClientApp</code> subdirectory is a standard React application based on the <code>create-react-app</code> template. If you open a command prompt in that directory, you can run <code>npm</code> commands such as <code>npm test</code> or <code>npm install</code>.</p>
-      </div>
-    );
-  }
-}
+
+    renderFeatureRow(featureName, guestAccess, managerAccess, adminAccess) {
+        return (
+            <>
+                <Grid item xs={4}><Typography>{featureName}</Typography></Grid>
+                <Grid item xs={2} align="center">
+                    {guestAccess ? <CheckIcon style={{ color: green[500] }} /> : <ClearIcon style={{ color: red[500] }} />}
+                </Grid>
+                <Grid item xs={3} align="center">
+                    {managerAccess ? <CheckIcon style={{ color: green[500] }} /> : <ClearIcon style={{ color: red[500] }} />}
+                </Grid>
+                <Grid item xs={3} align="center">
+                    {adminAccess ? <CheckIcon style={{ color: green[500] }} /> : <ClearIcon style={{ color: red[500] }} />}
+                </Grid>
+            </>
+        );
+    }
+
+    render() {
+
+        return (
+            <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+                <CssBaseline />
+                <AppBar position="static">
+                    <Toolbar>
+                        <Typography variant="h6" noWrap component="div">
+                            Automotive Factory Registrar
+                        </Typography>
+                    </Toolbar>
+                </AppBar>
+                <Container maxWidth="md" style={{ marginTop: '40px' }}>
+                    <Paper sx={{ p: 4, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                        <Typography variant="h4" gutterBottom>
+                            Welcome to our Service
+                        </Typography>
+                        <Typography variant="subtitle1" style={{ textAlign: 'center' }}>
+                            Explore the features available for different roles in our system.
+                        </Typography>
+
+                        <Grid container spacing={2} style={{ marginTop: '24px', marginBottom: '24px' }}>
+                            {/* Header Row */}
+                            <Grid item xs={4}><Typography variant="h6">Feature</Typography></Grid>
+                            <Grid item xs={2}><Typography variant="h6" align="center">Guest</Typography></Grid>
+                            <Grid item xs={3}><Typography variant="h6" align="center">Manager</Typography></Grid>
+                            <Grid item xs={3}><Typography variant="h6" align="center">Admin</Typography></Grid>
+
+                            {/* Feature Rows */}
+                            {this.renderFeatureRow('View Welcome Page', true, true, true)}
+                            {this.renderFeatureRow('Modify Part Names', false, true, true)}
+                            {this.renderFeatureRow('Move Vehicles Between Factories', false, true, true)}
+                            {this.renderFeatureRow('User Management', false, false, true)}
+                            {this.renderFeatureRow('View Overview Statistics', false, false, true)}
+                            {/* ... add more features as needed */}
+                        </Grid>
+
+                        <Box style={{ display: 'flex', gap: '20px', marginTop: '20px' }}>
+                            <Button variant="contained" color="primary" component={NavLink} to="/logon" sx={{
+                                '&:hover': {
+                                    color: 'white' // Keep the text color white
+                                }
+                            }} >
+                                Login
+                            </Button>
+                        <Button variant="contained" color="secondary" component={NavLink} to="/registration" sx={{
+                            '&:hover': {
+                                color: 'white' // Keep the text color white
+                            }
+                        }} >
+                                Register
+                            </Button>
+                        </Box>
+                    </Paper>
+                </Container>
+            </Box>
+        );
+    }
+};
+
+
+

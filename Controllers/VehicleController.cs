@@ -1,13 +1,16 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Reflection;
 using VehicleRegistration.Interfaces;
 using VehicleRegistration.Models;
+using VehicleRegistration.Utils;
 
 namespace VehicleRegistration.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = RolesConstant.ADMIN)]
     public class VehicleController : ControllerBase
     {
 
@@ -40,6 +43,13 @@ namespace VehicleRegistration.Controllers
         public IEnumerable<PostModel> GetAll()
         {
             return _postService.Get();
+        }
+
+        [HttpGet]
+        [Route("test")]
+        public string test()
+        {
+            return "Hello";
         }
 
         [HttpDelete("{id}")]
