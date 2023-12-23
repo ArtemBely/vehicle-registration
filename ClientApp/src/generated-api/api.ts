@@ -14,16 +14,14 @@
 
 
 import type { Configuration } from './configuration';
-//import type { AxiosPromise, AxiosInstance, AxiosRequestConfig } from 'axios';
-//import globalAxios from 'axios';
-import globalAxios, { AxiosInstance, AxiosPromise, AxiosRequestConfig } from 'axios';
-
+import type { AxiosPromise, AxiosInstance, AxiosRequestConfig } from 'axios';
+import globalAxios from 'axios';
 // Some imports not used depending on template conditions
 // @ts-ignore
+import { DUMMY_BASE_URL, assertParamExists, setApiKeyToObject, setBasicAuthToObject, setBearerAuthToObject, setOAuthToObject, setSearchParams, serializeDataIfNeeded, toPathString, createRequestFunction } from './common';
 import type { RequestArgs } from './base';
-import { DUMMY_BASE_URL, assertParamExists, createRequestFunction, serializeDataIfNeeded, setApiKeyToObject, setSearchParams, toPathString } from './common';
 // @ts-ignore
-import { BASE_PATH, BaseAPI, RequiredError, operationServerMap } from './base';
+import { BASE_PATH, COLLECTION_FORMATS, BaseAPI, RequiredError, operationServerMap } from './base';
 
 /**
  * 
@@ -67,6 +65,37 @@ export interface CustomerDto {
      * @memberof CustomerDto
      */
     'password': string;
+}
+/**
+ * 
+ * @export
+ * @interface FactoryDto
+ */
+export interface FactoryDto {
+    /**
+     * 
+     * @type {number}
+     * @memberof FactoryDto
+     */
+    'id'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof FactoryDto
+     */
+    'title'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof FactoryDto
+     */
+    'factory_location'?: string | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof FactoryDto
+     */
+    'director_id'?: number;
 }
 /**
  * 
@@ -262,6 +291,73 @@ export interface UpdatePermissionDto {
 /**
  * 
  * @export
+ * @interface VehicleDto
+ */
+export interface VehicleDto {
+    /**
+     * 
+     * @type {number}
+     * @memberof VehicleDto
+     */
+    'id'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof VehicleDto
+     */
+    'carserie'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof VehicleDto
+     */
+    'carbody'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof VehicleDto
+     */
+    'motor'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof VehicleDto
+     */
+    'transmission'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof VehicleDto
+     */
+    'werk'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof VehicleDto
+     */
+    'baugruppe'?: string | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof VehicleDto
+     */
+    'knr7'?: number | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof VehicleDto
+     */
+    'pin13'?: number | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof VehicleDto
+     */
+    'factory_id'?: number | null;
+}
+/**
+ * 
+ * @export
  * @interface WeatherForecast
  */
 export interface WeatherForecast {
@@ -386,6 +482,106 @@ export class CustomerAnalyticsApi extends BaseAPI {
      */
     public apiV1AdminAnalyticsCustomersGet(options?: AxiosRequestConfig) {
         return CustomerAnalyticsApiFp(this.configuration).apiV1AdminAnalyticsCustomersGet(options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+
+/**
+ * FactoryApi - axios parameter creator
+ * @export
+ */
+export const FactoryApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiV1UserFactoriesGet: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v1/user/factories`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Bearer required
+            await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * FactoryApi - functional programming interface
+ * @export
+ */
+export const FactoryApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = FactoryApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async apiV1UserFactoriesGet(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<FactoryDto>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiV1UserFactoriesGet(options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['FactoryApi.apiV1UserFactoriesGet']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+    }
+};
+
+/**
+ * FactoryApi - factory interface
+ * @export
+ */
+export const FactoryApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = FactoryApiFp(configuration)
+    return {
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiV1UserFactoriesGet(options?: any): AxiosPromise<Array<FactoryDto>> {
+            return localVarFp.apiV1UserFactoriesGet(options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * FactoryApi - object-oriented interface
+ * @export
+ * @class FactoryApi
+ * @extends {BaseAPI}
+ */
+export class FactoryApi extends BaseAPI {
+    /**
+     * 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof FactoryApi
+     */
+    public apiV1UserFactoriesGet(options?: AxiosRequestConfig) {
+        return FactoryApiFp(this.configuration).apiV1UserFactoriesGet(options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -803,46 +999,14 @@ export const VehicleApiAxiosParamCreator = function (configuration?: Configurati
     return {
         /**
          * 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        apiVehicleGet: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/api/Vehicle`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication Bearer required
-            await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
          * @param {number} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiVehicleIdDelete: async (id: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        apiV1UserIdDelete: async (id: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
-            assertParamExists('apiVehicleIdDelete', 'id', id)
-            const localVarPath = `/api/Vehicle/{id}`
+            assertParamExists('apiV1UserIdDelete', 'id', id)
+            const localVarPath = `/api/v1/user/{id}`
                 .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -875,10 +1039,10 @@ export const VehicleApiAxiosParamCreator = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiVehicleIdGet: async (id: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        apiV1UserIdGet: async (id: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
-            assertParamExists('apiVehicleIdGet', 'id', id)
-            const localVarPath = `/api/Vehicle/{id}`
+            assertParamExists('apiV1UserIdGet', 'id', id)
+            const localVarPath = `/api/v1/user/{id}`
                 .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -911,8 +1075,8 @@ export const VehicleApiAxiosParamCreator = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiVehiclePatch: async (postModel?: PostModel, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/api/Vehicle`;
+        apiV1UserPatch: async (postModel?: PostModel, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v1/user`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -947,8 +1111,8 @@ export const VehicleApiAxiosParamCreator = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiVehiclePost: async (postModel?: PostModel, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/api/Vehicle`;
+        apiV1UserPost: async (postModel?: PostModel, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v1/user`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -982,8 +1146,40 @@ export const VehicleApiAxiosParamCreator = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiVehicleTestGet: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/api/Vehicle/test`;
+        apiV1UserTestGet: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v1/user/test`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Bearer required
+            await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiV1UserVehicleGet: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v1/user/vehicle`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -1021,13 +1217,14 @@ export const VehicleApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
+         * @param {number} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async apiVehicleGet(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<PostModel>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.apiVehicleGet(options);
+        async apiV1UserIdDelete(id: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiV1UserIdDelete(id, options);
             const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['VehicleApi.apiVehicleGet']?.[index]?.url;
+            const operationBasePath = operationServerMap['VehicleApi.apiV1UserIdDelete']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
@@ -1036,22 +1233,10 @@ export const VehicleApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async apiVehicleIdDelete(id: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.apiVehicleIdDelete(id, options);
+        async apiV1UserIdGet(id: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiV1UserIdGet(id, options);
             const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['VehicleApi.apiVehicleIdDelete']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
-        },
-        /**
-         * 
-         * @param {number} id 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async apiVehicleIdGet(id: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.apiVehicleIdGet(id, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['VehicleApi.apiVehicleIdGet']?.[index]?.url;
+            const operationBasePath = operationServerMap['VehicleApi.apiV1UserIdGet']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
@@ -1060,10 +1245,10 @@ export const VehicleApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async apiVehiclePatch(postModel?: PostModel, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PostModel>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.apiVehiclePatch(postModel, options);
+        async apiV1UserPatch(postModel?: PostModel, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PostModel>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiV1UserPatch(postModel, options);
             const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['VehicleApi.apiVehiclePatch']?.[index]?.url;
+            const operationBasePath = operationServerMap['VehicleApi.apiV1UserPatch']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
@@ -1072,10 +1257,10 @@ export const VehicleApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async apiVehiclePost(postModel?: PostModel, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PostModel>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.apiVehiclePost(postModel, options);
+        async apiV1UserPost(postModel?: PostModel, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PostModel>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiV1UserPost(postModel, options);
             const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['VehicleApi.apiVehiclePost']?.[index]?.url;
+            const operationBasePath = operationServerMap['VehicleApi.apiV1UserPost']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
@@ -1083,10 +1268,21 @@ export const VehicleApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async apiVehicleTestGet(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.apiVehicleTestGet(options);
+        async apiV1UserTestGet(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiV1UserTestGet(options);
             const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['VehicleApi.apiVehicleTestGet']?.[index]?.url;
+            const operationBasePath = operationServerMap['VehicleApi.apiV1UserTestGet']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async apiV1UserVehicleGet(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<VehicleDto>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiV1UserVehicleGet(options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['VehicleApi.apiV1UserVehicleGet']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
     }
@@ -1101,11 +1297,12 @@ export const VehicleApiFactory = function (configuration?: Configuration, basePa
     return {
         /**
          * 
+         * @param {number} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiVehicleGet(options?: any): AxiosPromise<Array<PostModel>> {
-            return localVarFp.apiVehicleGet(options).then((request) => request(axios, basePath));
+        apiV1UserIdDelete(id: number, options?: any): AxiosPromise<void> {
+            return localVarFp.apiV1UserIdDelete(id, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1113,17 +1310,8 @@ export const VehicleApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiVehicleIdDelete(id: number, options?: any): AxiosPromise<void> {
-            return localVarFp.apiVehicleIdDelete(id, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @param {number} id 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        apiVehicleIdGet(id: number, options?: any): AxiosPromise<void> {
-            return localVarFp.apiVehicleIdGet(id, options).then((request) => request(axios, basePath));
+        apiV1UserIdGet(id: number, options?: any): AxiosPromise<void> {
+            return localVarFp.apiV1UserIdGet(id, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1131,8 +1319,8 @@ export const VehicleApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiVehiclePatch(postModel?: PostModel, options?: any): AxiosPromise<PostModel> {
-            return localVarFp.apiVehiclePatch(postModel, options).then((request) => request(axios, basePath));
+        apiV1UserPatch(postModel?: PostModel, options?: any): AxiosPromise<PostModel> {
+            return localVarFp.apiV1UserPatch(postModel, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1140,16 +1328,24 @@ export const VehicleApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiVehiclePost(postModel?: PostModel, options?: any): AxiosPromise<PostModel> {
-            return localVarFp.apiVehiclePost(postModel, options).then((request) => request(axios, basePath));
+        apiV1UserPost(postModel?: PostModel, options?: any): AxiosPromise<PostModel> {
+            return localVarFp.apiV1UserPost(postModel, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiVehicleTestGet(options?: any): AxiosPromise<string> {
-            return localVarFp.apiVehicleTestGet(options).then((request) => request(axios, basePath));
+        apiV1UserTestGet(options?: any): AxiosPromise<string> {
+            return localVarFp.apiV1UserTestGet(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiV1UserVehicleGet(options?: any): AxiosPromise<Array<VehicleDto>> {
+            return localVarFp.apiV1UserVehicleGet(options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -1163,12 +1359,13 @@ export const VehicleApiFactory = function (configuration?: Configuration, basePa
 export class VehicleApi extends BaseAPI {
     /**
      * 
+     * @param {number} id 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof VehicleApi
      */
-    public apiVehicleGet(options?: AxiosRequestConfig) {
-        return VehicleApiFp(this.configuration).apiVehicleGet(options).then((request) => request(this.axios, this.basePath));
+    public apiV1UserIdDelete(id: number, options?: AxiosRequestConfig) {
+        return VehicleApiFp(this.configuration).apiV1UserIdDelete(id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -1178,19 +1375,8 @@ export class VehicleApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof VehicleApi
      */
-    public apiVehicleIdDelete(id: number, options?: AxiosRequestConfig) {
-        return VehicleApiFp(this.configuration).apiVehicleIdDelete(id, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @param {number} id 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof VehicleApi
-     */
-    public apiVehicleIdGet(id: number, options?: AxiosRequestConfig) {
-        return VehicleApiFp(this.configuration).apiVehicleIdGet(id, options).then((request) => request(this.axios, this.basePath));
+    public apiV1UserIdGet(id: number, options?: AxiosRequestConfig) {
+        return VehicleApiFp(this.configuration).apiV1UserIdGet(id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -1200,8 +1386,8 @@ export class VehicleApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof VehicleApi
      */
-    public apiVehiclePatch(postModel?: PostModel, options?: AxiosRequestConfig) {
-        return VehicleApiFp(this.configuration).apiVehiclePatch(postModel, options).then((request) => request(this.axios, this.basePath));
+    public apiV1UserPatch(postModel?: PostModel, options?: AxiosRequestConfig) {
+        return VehicleApiFp(this.configuration).apiV1UserPatch(postModel, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -1211,8 +1397,8 @@ export class VehicleApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof VehicleApi
      */
-    public apiVehiclePost(postModel?: PostModel, options?: AxiosRequestConfig) {
-        return VehicleApiFp(this.configuration).apiVehiclePost(postModel, options).then((request) => request(this.axios, this.basePath));
+    public apiV1UserPost(postModel?: PostModel, options?: AxiosRequestConfig) {
+        return VehicleApiFp(this.configuration).apiV1UserPost(postModel, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -1221,8 +1407,18 @@ export class VehicleApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof VehicleApi
      */
-    public apiVehicleTestGet(options?: AxiosRequestConfig) {
-        return VehicleApiFp(this.configuration).apiVehicleTestGet(options).then((request) => request(this.axios, this.basePath));
+    public apiV1UserTestGet(options?: AxiosRequestConfig) {
+        return VehicleApiFp(this.configuration).apiV1UserTestGet(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof VehicleApi
+     */
+    public apiV1UserVehicleGet(options?: AxiosRequestConfig) {
+        return VehicleApiFp(this.configuration).apiV1UserVehicleGet(options).then((request) => request(this.axios, this.basePath));
     }
 }
 

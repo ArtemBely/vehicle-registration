@@ -11,7 +11,7 @@ const NavBar = () => {
     const mainFeatures = [
         { icon: <HomeIcon />, text: 'Overview', path: '/overview' },
         { icon: <Assessment />, text: 'Analytics', path: '/analytics' },
-        { icon: <Build />, text: 'Parts Management', path: '/parts-management' },
+        { icon: <Build />, text: 'Parts Management', path: '/factories' },
         { icon: <DirectionsCar />, text: 'Vehicle Tracking', path: '/vehicle-tracking' }
     ];
 

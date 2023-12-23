@@ -1,5 +1,7 @@
 import { Account } from "./components/Account";
 import Analytics from "./components/Analytics";
+import Vehicles from "./components/Vehicles";
+import Factories from "./components/Factories";
 import { FetchData } from "./components/FetchData";
 import { Home } from "./components/Home";
 import { Registration } from "./components/Registration";
@@ -17,6 +19,14 @@ const AppRoutes = [
   {
     path: '/analytics',
     element: <Analytics />
+    },
+  {
+    path: '/vehicle-tracking',
+    element: <Vehicles />
+  },
+  {
+    path: '/factories',
+    element: <Factories />
   },
   {
     path: '/fetch-data',

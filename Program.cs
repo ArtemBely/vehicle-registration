@@ -14,6 +14,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<AppDataContext>(o => o.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSqlConnection")));
 
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
 
 //builder.Services.AddIdentity<IdentityUser, IdentityRole>()
 //    .AddEntityFrameworkStores<AppDataContext>()
@@ -53,6 +55,8 @@ builder.Services.AddTransient<IPostService, PostService>();
 builder.Services.AddTransient<IRoleService, RoleService>();
 builder.Services.AddTransient<IAuthService, AuthService>();
 builder.Services.AddTransient<ICustomerService, CustomerAnalytics>();
+builder.Services.AddTransient<IVehicleService, VehicleService>();
+builder.Services.AddTransient<IFactoryService, FactoryService>();
 builder.Services.AddSingleton<AutoDataContext>();
 
 //JWT implementation

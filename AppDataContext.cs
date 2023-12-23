@@ -19,23 +19,27 @@ namespace VehicleRegistration
     {
         public DbSet<Role> Role { get; set; }
 
+        public DbSet<Vehicle> Vehicles { get; set; }
+
+        public DbSet<Factory> Factories { get; set; }
+
         public AppDataContext(DbContextOptions<AppDataContext> options) : base(options)
         {
             Database.Migrate();
         }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
+        //protected override void OnModelCreating(ModelBuilder modelBuilder)
+        //{
+        //    base.OnModelCreating(modelBuilder);
 
-            // Конфигурации для модели Role
-            modelBuilder.Entity<Role>(entity =>
-            {
-                entity.ToTable("role", t => t.ExcludeFromMigrations());
-            });
+        //    // Конфигурации для модели Role
+        //    modelBuilder.Entity<Role>(entity =>
+        //    {
+        //        entity.ToTable("role", t => t.ExcludeFromMigrations());
+        //    });
 
-            // Дополнительные настройки моделей...
-        }
+        //    // Дополнительные настройки моделей...
+        //}
     }
 
 }

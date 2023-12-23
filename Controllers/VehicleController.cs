@@ -2,23 +2,27 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Reflection;
+using VehicleRegistration.Data.Dto;
 using VehicleRegistration.Interfaces;
 using VehicleRegistration.Models;
 using VehicleRegistration.Utils;
 
 namespace VehicleRegistration.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("/api/v1/user")]
     [ApiController]
-    [Authorize(Roles = RolesConstant.ADMIN)]
+    [Authorize(Roles = RolesConstant.USER)]
     public class VehicleController : ControllerBase
     {
 
         private IPostService _postService;
 
-        public VehicleController(IPostService postService)
+        private IVehicleService _vehicleService;
+
+        public VehicleController(IPostService postService, IVehicleService vehicleService)
         {
             _postService = postService;
+            _vehicleService = vehicleService;
         }
 
         [HttpPost]
@@ -40,9 +44,10 @@ namespace VehicleRegistration.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<PostModel> GetAll()
+        [Route("vehicle")]
+        public IEnumerable<VehicleDto> GetAll()
         {
-            return _postService.Get();
+            return _vehicleService.Get();
         }
 
         [HttpGet]
