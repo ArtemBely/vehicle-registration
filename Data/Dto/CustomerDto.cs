@@ -13,7 +13,6 @@ namespace VehicleRegistration.Data.Dto
         [Required(ErrorMessage = "Phone is required")]
         public string PhoneNumber { get; set; }
 
-        [Required(ErrorMessage = "DateOfBirth is required")]
         public DateTime DateOfBirth { get; set; }
 
         [Required(ErrorMessage = "Email is required")]

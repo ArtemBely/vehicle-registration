@@ -28,8 +28,27 @@ const Analytics = () => {
         fetchData();
     }, []);
 
+    const handleAddNew = () => {
+        setCurrentUser({
+            email: "",
+            userName: "",
+            name: "",
+            surname: "",
+            phoneNumber: "",
+            password: ""
+        });
+        setOpen(true);
+    };
+
+    //const handleClickOpen = (user) => {
+    //    setCurrentUser(user);
+    //    setOpen(true);
+    //};
     const handleClickOpen = (user) => {
-        setCurrentUser(user);
+        setCurrentUser({
+            ...user,
+            password: undefined // Убираем поле пароля
+        });
         setOpen(true);
     };
 
@@ -60,6 +79,7 @@ const Analytics = () => {
                         <Typography variant="h5" gutterBottom>
                             User Analytics
                         </Typography>
+                        <Button sx={{ marginBottom: '20px' }} onClick={handleAddNew} variant="contained">Add customer</Button>
                         <TableContainer component={Paper}>
                             <Table sx={{ minWidth: 650 }} aria-label="simple table">
                                 <TableHead>
@@ -90,6 +110,7 @@ const Analytics = () => {
                                     handleSave={handleSave}
                                     currentUser={currentUser}
                                     setCurrentUser={setCurrentUser}
+                                    addingNewUser={currentUser.password !== undefined} // Добавляем свойство для определения, добавляем ли мы нового пользователя
                                 />
                             </Table>
                         </TableContainer>

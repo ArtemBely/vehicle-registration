@@ -9,6 +9,7 @@ const Vehicles = () => {
 
     const [vehicle, setVehicle] = useState([]);
     const [open, setOpen] = useState(false);
+    const [isNew, setIsNew] = useState(false);
     const [currentVehicle, setCurrentVehicle] = useState({});
 
     useEffect(() => {
@@ -24,8 +25,25 @@ const Vehicles = () => {
         fetchData();
     }, []);
 
+    const handleAddNew = () => {
+        setCurrentVehicle({
+            carserie: '',
+            carbody: '',
+            motor: '',
+            transmission: '',
+            werk: '',
+            baugruppe: '',
+            knr7: 0,
+            pin13: 0,
+            factory_id: 1
+        });
+        setIsNew(true);
+        setOpen(true);
+    };
+
     const handleOpenDialog = (vehicle) => {
         setCurrentVehicle(vehicle);
+        setIsNew(false);
         setOpen(true);
     };
 
@@ -55,6 +73,7 @@ const Vehicles = () => {
                         <Typography variant="h5" gutterBottom>
                             Vehicle Tracking
                         </Typography>
+                        <Button sx={{ marginBottom: '20px' }} onClick={handleAddNew} variant="contained">Add Vehicle</Button>
                         <TableContainer component={Paper}>
                             <Table sx={{ minWidth: 650 }} aria-label="simple table">
                                 <TableHead>
@@ -89,10 +108,12 @@ const Vehicles = () => {
                                 </TableBody>
                                 <VehicleEditDialog
                                     open={open}
+                                    vehicle={vehicle}
                                     handleClose={handleCloseDialog}
                                     handleSave={handleSaveVehicle}
                                     currentVehicle={currentVehicle}
                                     setCurrentVehicle={setCurrentVehicle}
+                                    addingNewVehicle={isNew}
                                 />
                             </Table>
                         </TableContainer>

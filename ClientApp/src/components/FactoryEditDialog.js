@@ -1,7 +1,7 @@
 import React from 'react';
 import { Dialog, DialogActions, DialogContent, DialogTitle, TextField, Button, Autocomplete } from '@mui/material';
 
-const FactoryEditDialog = ({ open, handleClose, handleSave, currentFactory, setCurrentFactory, users }) => {
+const FactoryEditDialog = ({ open, handleClose, handleSave, currentFactory, setCurrentFactory, users, addingNewFactory, isAdmin }) => {
 
     const handleSetDirector = (event, value) => {
         setCurrentFactory({ ...currentFactory, director_id: value ? value.id : '' });
@@ -22,6 +22,7 @@ const FactoryEditDialog = ({ open, handleClose, handleSave, currentFactory, setC
                     InputProps={{
                         readOnly: true,
                     }}
+                    sx={{ display: addingNewFactory ? 'none' : 'flex' }}
                 />
                 <TextField
                     margin="dense"
@@ -49,9 +50,13 @@ const FactoryEditDialog = ({ open, handleClose, handleSave, currentFactory, setC
                     variant="standard"
                     value={currentFactory.director_id || ''}
                     onChange={(e) => setCurrentFactory({ ...currentFactory, director_id: e.target.value })}
+                    InputProps={{
+                        readOnly: !isAdmin
+                    }}
                 />
                 <Autocomplete
                     options={users}
+                    sx={{ display: isAdmin ? 'flex' : 'none' }}
                     getOptionLabel={(option) => option.firstName + ' ' + option.surname}
                     renderInput={(params) => <TextField {...params} label="Director" />}
                     onChange={handleSetDirector}

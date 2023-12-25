@@ -25,24 +25,6 @@ namespace VehicleRegistration.Controllers
             _vehicleService = vehicleService;
         }
 
-        [HttpPost]
-        public PostModel Create(PostModel model)
-        {
-           return  _postService.Create(model);
-        }
-
-        [HttpPatch]
-        public PostModel Update(PostModel model)
-        {
-            return _postService.Update(model);
-        }
-
-        [HttpGet("{id}")]
-        public object Get(int id)
-        {
-            return _postService.Get(id);
-        }
-
         [HttpGet]
         [Route("vehicle")]
         public IEnumerable<VehicleDto> GetAll()
@@ -50,18 +32,54 @@ namespace VehicleRegistration.Controllers
             return _vehicleService.Get();
         }
 
-        [HttpGet]
-        [Route("test")]
-        public string test()
+        [HttpPost]
+        [Route("new_vehicle")]
+        public IActionResult Insert([FromBody] VehicleDto vehicleDto)
         {
-            return "Hello";
+            _vehicleService.Insert(vehicleDto);
+            return Ok();
         }
 
-        [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+
+        [HttpPut]
+        [Route("vehicle/update")]
+        public async Task<IActionResult> EditVehicle([FromBody] VehicleDto updatedVehicle)
         {
-            _postService.Delete(id);
-            return Ok();
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                var result = await _vehicleService.UpdateVehicleAsync(updatedVehicle);
+                if (result != null)
+                {
+                    return Ok(result);
+                }
+                else
+                {
+                    return NotFound($"Vehicle with ID {updatedVehicle.id} not found.");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal server error: " + ex);
+            }
+        }
+
+        [HttpDelete("vehicle/delete")]
+        public async Task<IActionResult> DeleteVehicle([FromQuery] int id)
+        {
+            bool deleteResult = await _vehicleService.DeleteVehicleByIdAsync(id);
+            if (deleteResult)
+            {
+                return Ok();
+            }
+            else
+            {
+                return NotFound($"Vehicle with ID {id} not found.");
+            }
         }
     }
 }

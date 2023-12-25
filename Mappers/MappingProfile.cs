@@ -9,6 +9,8 @@ namespace VehicleRegistration.Mappers
         public MappingProfile()
         {
             CreateMap<Vehicle, VehicleDto>();
+            CreateMap<VehicleDto, Vehicle>();
+            CreateMap<FactoryDto, Factory>();
             CreateMap<Factory, FactoryDto>();
         }
     }

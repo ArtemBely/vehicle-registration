@@ -10,10 +10,16 @@ const Factories = () => {
 
     const [factory, setFactories] = useState([]);
     const [users, setUsers] = useState([]);
+    const [isAdmin, setIsAdmin] = useState(false);
+    const [isNew, setIsNew] = useState(false);
     const [open, setOpen] = useState(false);
     const [currentFactory, setCurrentFactory] = useState({});
 
     useEffect(() => {
+        if (typeof window != undefined) {
+            const activeUser = JSON.parse(localStorage.getItem('activeUser'));
+            setIsAdmin(activeUser.roles.includes('ADMIN'))
+        }
         const fetchData = async () => {
             try {
                 const responseFactories = await factoryApi.apiV1UserFactoriesGet();
@@ -33,6 +39,22 @@ const Factories = () => {
         fetchData();
         fetchUsers();
     }, []);
+
+    const handleAddNew = () => {
+        setCurrentFactory({
+            carserie: '',
+            carbody: '',
+            motor: '',
+            transmission: '',
+            werk: '',
+            baugruppe: '',
+            knr7: 0,
+            pin13: 0,
+            factory_id: 1
+        });
+        setIsNew(true);
+        setOpen(true);
+    };
 
     const handleClickOpen = (factory) => {
         setCurrentFactory(factory);
@@ -66,6 +88,11 @@ const Factories = () => {
                         <Typography variant="h5" gutterBottom>
                             Factories
                         </Typography>
+                        <Button sx={{
+                            marginBottom: '20px',
+                            display: isAdmin ?
+                                'flex' : 'none'
+                        }} onClick={handleAddNew} variant="contained">Add Factory</Button>
                         <TableContainer component={Paper}>
                             <Table sx={{ minWidth: 650 }} aria-label="simple table">
                                 <TableHead>
@@ -106,6 +133,8 @@ const Factories = () => {
                                     currentFactory={currentFactory}
                                     setCurrentFactory={setCurrentFactory}
                                     users={users}
+                                    addingNewFactory={isNew}
+                                    isAdmin={isAdmin}
                                 />
                             </Table>
                         </TableContainer>
