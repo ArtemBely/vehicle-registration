@@ -4,10 +4,12 @@ import NavBar from './NavBar';
 import VehicleEditDialog from './VehicleEditDialog';
 import { useEffect, useState } from 'react';
 import { userApi } from '../api/user_api';
+import { factoryApi } from '../api/factory_api';
 
 const Vehicles = () => {
 
     const [vehicle, setVehicle] = useState([]);
+    const [factories, setFactories] = useState([]);
     const [open, setOpen] = useState(false);
     const [isNew, setIsNew] = useState(false);
     const [currentVehicle, setCurrentVehicle] = useState({});
@@ -21,8 +23,16 @@ const Vehicles = () => {
                 console.error('Mistake in API request', error);
             }
         };
-
+        const fetchFactories = async () => {
+            try {
+                const responseVehicles = await factoryApi.apiV1UserFactoriesGet();
+                setFactories(responseVehicles.data);
+            } catch (error) {
+                console.error('Mistake in API request', error);
+            }
+        };
         fetchData();
+        fetchFactories();
     }, []);
 
     const handleAddNew = () => {
@@ -114,6 +124,7 @@ const Vehicles = () => {
                                     currentVehicle={currentVehicle}
                                     setCurrentVehicle={setCurrentVehicle}
                                     addingNewVehicle={isNew}
+                                    factories={factories}
                                 />
                             </Table>
                         </TableContainer>

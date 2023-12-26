@@ -19,6 +19,6 @@ namespace VehicleRegistration.Models
         public string factory_location { get; set; }
 
         [Required]
-        public int director_id { get; set; }
+        public string director_id { get; set; }
     }
 }

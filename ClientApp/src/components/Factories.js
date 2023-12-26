@@ -42,15 +42,9 @@ const Factories = () => {
 
     const handleAddNew = () => {
         setCurrentFactory({
-            carserie: '',
-            carbody: '',
-            motor: '',
-            transmission: '',
-            werk: '',
-            baugruppe: '',
-            knr7: 0,
-            pin13: 0,
-            factory_id: 1
+            title: '',
+            factory_location: '',
+            director_id: ''
         });
         setIsNew(true);
         setOpen(true);
@@ -116,7 +110,11 @@ const Factories = () => {
                                                 {factory.title}
                                             </TableCell>
                                             <TableCell>{factory.factory_location}</TableCell>
-                                            <TableCell>{factory.director_id}</TableCell>
+                                            <TableCell>
+                                                {isAdmin ? (users.find(user => user.id === factory.director_id)
+                                                    ? `${users.find(user => user.id === factory.director_id).firstName} ${users.find(user => user.id === factory.director_id).surname}`
+                                                    : 'Not yet') : 'Ask your manager'
+                                            }</TableCell>
                                             <Button
                                                 sx={{ marginTop: '7px' }}
                                                 variant="contained"

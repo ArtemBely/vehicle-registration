@@ -675,6 +675,79 @@ export const FactoryApiAxiosParamCreator = function (configuration?: Configurati
     return {
         /**
          * 
+         * @param {FactoryDto} [factoryDto] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiV1AdminFactoryCreatePost: async (factoryDto?: FactoryDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v1/admin/factory/create`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Bearer required
+            await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(factoryDto, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {number} [id] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiV1AdminFactoryDeleteDelete: async (id?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v1/admin/factory/delete`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Bearer required
+            await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
+
+            if (id !== undefined) {
+                localVarQueryParameter['id'] = id;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -705,6 +778,42 @@ export const FactoryApiAxiosParamCreator = function (configuration?: Configurati
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * 
+         * @param {FactoryDto} [factoryDto] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiV1UserFactoryEditPut: async (factoryDto?: FactoryDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v1/user/factory/edit`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Bearer required
+            await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(factoryDto, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -717,6 +826,30 @@ export const FactoryApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
+         * @param {FactoryDto} [factoryDto] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async apiV1AdminFactoryCreatePost(factoryDto?: FactoryDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiV1AdminFactoryCreatePost(factoryDto, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['FactoryApi.apiV1AdminFactoryCreatePost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {number} [id] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async apiV1AdminFactoryDeleteDelete(id?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiV1AdminFactoryDeleteDelete(id, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['FactoryApi.apiV1AdminFactoryDeleteDelete']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -724,6 +857,18 @@ export const FactoryApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.apiV1UserFactoriesGet(options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['FactoryApi.apiV1UserFactoriesGet']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {FactoryDto} [factoryDto] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async apiV1UserFactoryEditPut(factoryDto?: FactoryDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiV1UserFactoryEditPut(factoryDto, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['FactoryApi.apiV1UserFactoryEditPut']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
     }
@@ -738,11 +883,38 @@ export const FactoryApiFactory = function (configuration?: Configuration, basePa
     return {
         /**
          * 
+         * @param {FactoryDto} [factoryDto] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiV1AdminFactoryCreatePost(factoryDto?: FactoryDto, options?: any): AxiosPromise<void> {
+            return localVarFp.apiV1AdminFactoryCreatePost(factoryDto, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {number} [id] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiV1AdminFactoryDeleteDelete(id?: number, options?: any): AxiosPromise<void> {
+            return localVarFp.apiV1AdminFactoryDeleteDelete(id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
         apiV1UserFactoriesGet(options?: any): AxiosPromise<Array<FactoryDto>> {
             return localVarFp.apiV1UserFactoriesGet(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {FactoryDto} [factoryDto] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiV1UserFactoryEditPut(factoryDto?: FactoryDto, options?: any): AxiosPromise<void> {
+            return localVarFp.apiV1UserFactoryEditPut(factoryDto, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -756,12 +928,45 @@ export const FactoryApiFactory = function (configuration?: Configuration, basePa
 export class FactoryApi extends BaseAPI {
     /**
      * 
+     * @param {FactoryDto} [factoryDto] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof FactoryApi
+     */
+    public apiV1AdminFactoryCreatePost(factoryDto?: FactoryDto, options?: AxiosRequestConfig) {
+        return FactoryApiFp(this.configuration).apiV1AdminFactoryCreatePost(factoryDto, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {number} [id] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof FactoryApi
+     */
+    public apiV1AdminFactoryDeleteDelete(id?: number, options?: AxiosRequestConfig) {
+        return FactoryApiFp(this.configuration).apiV1AdminFactoryDeleteDelete(id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof FactoryApi
      */
     public apiV1UserFactoriesGet(options?: AxiosRequestConfig) {
         return FactoryApiFp(this.configuration).apiV1UserFactoriesGet(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {FactoryDto} [factoryDto] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof FactoryApi
+     */
+    public apiV1UserFactoryEditPut(factoryDto?: FactoryDto, options?: AxiosRequestConfig) {
+        return FactoryApiFp(this.configuration).apiV1UserFactoryEditPut(factoryDto, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

@@ -12,7 +12,7 @@ namespace VehicleRegistration.Data.Dto
 
         public string factory_location { get; set; }
 
-        public int director_id { get; set; }
+        public string director_id { get; set; }
     }
 }
 

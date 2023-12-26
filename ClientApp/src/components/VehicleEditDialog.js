@@ -2,7 +2,7 @@
 import { Dialog, DialogActions, DialogContent, DialogTitle, Autocomplete, TextField, Button } from '@mui/material';
 import { userApi } from '../api/user_api';
 
-const VehicleEditDialog = ({ open, vehicle, handleClose, handleSave, currentVehicle, setCurrentVehicle, addingNewVehicle }) => {
+const VehicleEditDialog = ({ open, vehicle, handleClose, handleSave, currentVehicle, setCurrentVehicle, addingNewVehicle, factories }) => {
 
     const [isAdmin, setIsAdmin] = useState(false);
     const [carSeriesOptions, setCarSeriesOptions] = useState([]);
@@ -53,7 +53,7 @@ const VehicleEditDialog = ({ open, vehicle, handleClose, handleSave, currentVehi
             const pin13Set = new Set(vehicle.map(v => v.pin13));
             setPin13Options(Array.from(pin13Set));
 
-            const factoryIdSet = new Set(vehicle.map(v => v.factory_id));
+            const factoryIdSet = new Set(factories.map(v => v.id));
             setFactoryIdOptions(Array.from(factoryIdSet));
         }
     }, [vehicle]);
@@ -222,18 +222,45 @@ const VehicleEditDialog = ({ open, vehicle, handleClose, handleSave, currentVehi
                     fullWidth
                 />
                 <Autocomplete
-                    value={currentVehicle.factory_id || ''}
+                    value={factories.find(factory => factory.id === currentVehicle.factory_id) || null}
+                    options={factories}
+                    getOptionLabel={(option) => option.title}
                     onChange={(event, newValue) => {
                         setCurrentVehicle(prevState => ({
                             ...prevState,
-                            factory_id: newValue
+                            factory_id: newValue ? newValue.id : ''
                         }));
                     }}
-                    options={factoryIdOptions}
-                    getOptionLabel={(option) => option.toString()}
-                    renderInput={(params) => <TextField {...params} label="Factory ID" margin="dense" />}
-                    fullWidth
+                    renderInput={(params) => <TextField {...params} label="Factory" margin="dense" />}
+                    sx={{ display: isAdmin ? 'flex' : 'none' }}
                 />
+
+                {/*<Autocomplete*/}
+                {/*    value={currentVehicle.factory_id || ''}*/}
+                {/*    onChange={(event, newValue) => {*/}
+                {/*        setCurrentVehicle(prevState => ({*/}
+                {/*            ...prevState,*/}
+                {/*            factory_id: newValue*/}
+                {/*        }));*/}
+                {/*    }}*/}
+                {/*    options={factoryIdOptions}*/}
+                {/*    getOptionLabel={(option) => option.toString()}*/}
+                {/*    renderInput={(params) => <TextField {...params} label="Factory ID" margin="dense" />}*/}
+                {/*    fullWidth*/}
+                {/*/>*/}
+
+                {/*<Autocomplete*/}
+                {/*    value={currentVehicle.factory_id || ''}*/}
+                {/*    options={factories}*/}
+                {/*    getOptionLabel={(option) => option.id}*/}
+                {/*    renderInput={(params) => <TextField {...params} label="Factory ID" margin="dense" />}*/}
+                {/*        onChange={(event, newValue) => {*/}
+                {/*            setCurrentVehicle(prevState => ({*/}
+                {/*                ...prevState,*/}
+                {/*                factory_id: newValue*/}
+                {/*            }));*/}
+                {/*        }}*/}
+                {/*/>*/}
             </DialogContent>
             <DialogActions>
                 <Button
