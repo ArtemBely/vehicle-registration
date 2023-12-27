@@ -54,5 +54,18 @@ namespace VehicleRegistration.Services
             var result = await _appDataContext.SaveChangesAsync();
             return result > 0;
         }
+
+        public async Task<bool> UpdateFactoryForVehicle(UdpateFactoryDto udpateFactoryDto)
+        {
+            var vehicle = await _appDataContext.Vehicles.FindAsync(udpateFactoryDto.vehicle_id);
+            if (vehicle == null) return false;
+
+            vehicle.factory_id = udpateFactoryDto.factory_id;
+            _appDataContext.Vehicles.Update(vehicle);
+            await _appDataContext.SaveChangesAsync();
+
+            return true;
+        }
+
     }
 }

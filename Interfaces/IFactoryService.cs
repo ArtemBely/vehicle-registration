@@ -12,5 +12,7 @@ namespace VehicleRegistration.Interfaces
         Task<FactoryDto> UpdateFactoryAsync(FactoryDto factoryDto);
 
         Task<bool> DeleteFactoryByIdAsync(int id);
+
+        Task<bool> UpdateFactoryForVehicle(UdpateFactoryDto udpateFactoryDto);
     }
 }

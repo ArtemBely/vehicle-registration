@@ -8,12 +8,14 @@ import NavBar from './NavBar';
 import UserEditDialog from './UserEditDialog';
 import { useEffect, useState } from 'react';
 import { adminApi } from '../api/admin_api';
+import { useNavigate } from 'react-router-dom';
 
 const Analytics = () => {
 
     const [users, setUsers] = useState([]);
     const [open, setOpen] = useState(false);
     const [currentUser, setCurrentUser] = useState({});
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -22,11 +24,14 @@ const Analytics = () => {
                 setUsers(responseCustomers.data);
             } catch (error) {
                 console.error('Mistake in API request', error);
+                if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+                    navigate('/logon');
+                }
             }
         };
 
         fetchData();
-    }, []);
+    }, [navigate]);
 
     const handleAddNew = () => {
         setCurrentUser({
@@ -35,19 +40,16 @@ const Analytics = () => {
             name: "",
             surname: "",
             phoneNumber: "",
-            password: ""
+            password: "",
+            isAdmin: false
         });
         setOpen(true);
     };
 
-    //const handleClickOpen = (user) => {
-    //    setCurrentUser(user);
-    //    setOpen(true);
-    //};
     const handleClickOpen = (user) => {
         setCurrentUser({
             ...user,
-            password: undefined // Убираем поле пароля
+            password: undefined
         });
         setOpen(true);
     };
@@ -57,7 +59,6 @@ const Analytics = () => {
     };
 
     const handleSave = () => {
-        // Здесь ваша логика для сохранения данных
         setOpen(false);
     };
 
@@ -110,7 +111,7 @@ const Analytics = () => {
                                     handleSave={handleSave}
                                     currentUser={currentUser}
                                     setCurrentUser={setCurrentUser}
-                                    addingNewUser={currentUser.password !== undefined} // Добавляем свойство для определения, добавляем ли мы нового пользователя
+                                    addingNewUser={currentUser.password !== undefined}
                                 />
                             </Table>
                         </TableContainer>

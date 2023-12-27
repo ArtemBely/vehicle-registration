@@ -92,10 +92,10 @@ export interface FactoryDto {
     'factory_location'?: string | null;
     /**
      * 
-     * @type {number}
+     * @type {string}
      * @memberof FactoryDto
      */
-    'director_id'?: number;
+    'director_id'?: string | null;
 }
 /**
  * 
@@ -228,6 +228,121 @@ export interface ProfileDto {
 /**
  * 
  * @export
+ * @interface ProfileDtoWithAdminStatus
+ */
+export interface ProfileDtoWithAdminStatus {
+    /**
+     * 
+     * @type {string}
+     * @memberof ProfileDtoWithAdminStatus
+     */
+    'id'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProfileDtoWithAdminStatus
+     */
+    'userName'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProfileDtoWithAdminStatus
+     */
+    'normalizedUserName'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProfileDtoWithAdminStatus
+     */
+    'email'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProfileDtoWithAdminStatus
+     */
+    'normalizedEmail'?: string | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof ProfileDtoWithAdminStatus
+     */
+    'emailConfirmed'?: boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProfileDtoWithAdminStatus
+     */
+    'passwordHash'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProfileDtoWithAdminStatus
+     */
+    'securityStamp'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProfileDtoWithAdminStatus
+     */
+    'concurrencyStamp'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProfileDtoWithAdminStatus
+     */
+    'phoneNumber'?: string | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof ProfileDtoWithAdminStatus
+     */
+    'phoneNumberConfirmed'?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof ProfileDtoWithAdminStatus
+     */
+    'twoFactorEnabled'?: boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProfileDtoWithAdminStatus
+     */
+    'lockoutEnd'?: string | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof ProfileDtoWithAdminStatus
+     */
+    'lockoutEnabled'?: boolean;
+    /**
+     * 
+     * @type {number}
+     * @memberof ProfileDtoWithAdminStatus
+     */
+    'accessFailedCount'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProfileDtoWithAdminStatus
+     */
+    'firstName'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProfileDtoWithAdminStatus
+     */
+    'surname'?: string | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof ProfileDtoWithAdminStatus
+     */
+    'isAdmin'?: boolean;
+}
+/**
+ * 
+ * @export
  * @interface Role
  */
 export interface Role {
@@ -249,6 +364,25 @@ export interface Role {
      * @memberof Role
      */
     'role_description'?: string | null;
+}
+/**
+ * 
+ * @export
+ * @interface UdpateFactoryDto
+ */
+export interface UdpateFactoryDto {
+    /**
+     * 
+     * @type {number}
+     * @memberof UdpateFactoryDto
+     */
+    'factory_id'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof UdpateFactoryDto
+     */
+    'vehicle_id'?: number;
 }
 /**
  * 
@@ -548,7 +682,7 @@ export const CustomerAnalyticsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async apiV1AdminAnalyticsCustomersGet(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ProfileDto>>> {
+        async apiV1AdminAnalyticsCustomersGet(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ProfileDtoWithAdminStatus>>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.apiV1AdminAnalyticsCustomersGet(options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['CustomerAnalyticsApi.apiV1AdminAnalyticsCustomersGet']?.[index]?.url;
@@ -599,7 +733,7 @@ export const CustomerAnalyticsApiFactory = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiV1AdminAnalyticsCustomersGet(options?: any): AxiosPromise<Array<ProfileDto>> {
+        apiV1AdminAnalyticsCustomersGet(options?: any): AxiosPromise<Array<ProfileDtoWithAdminStatus>> {
             return localVarFp.apiV1AdminAnalyticsCustomersGet(options).then((request) => request(axios, basePath));
         },
         /**
@@ -673,6 +807,42 @@ export class CustomerAnalyticsApi extends BaseAPI {
  */
 export const FactoryApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
+        /**
+         * 
+         * @param {UdpateFactoryDto} [udpateFactoryDto] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiV1AdminDestinationUpdatePost: async (udpateFactoryDto?: UdpateFactoryDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v1/admin/destination/update`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Bearer required
+            await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(udpateFactoryDto, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
         /**
          * 
          * @param {FactoryDto} [factoryDto] 
@@ -826,6 +996,18 @@ export const FactoryApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
+         * @param {UdpateFactoryDto} [udpateFactoryDto] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async apiV1AdminDestinationUpdatePost(udpateFactoryDto?: UdpateFactoryDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiV1AdminDestinationUpdatePost(udpateFactoryDto, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['FactoryApi.apiV1AdminDestinationUpdatePost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * 
          * @param {FactoryDto} [factoryDto] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -883,6 +1065,15 @@ export const FactoryApiFactory = function (configuration?: Configuration, basePa
     return {
         /**
          * 
+         * @param {UdpateFactoryDto} [udpateFactoryDto] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiV1AdminDestinationUpdatePost(udpateFactoryDto?: UdpateFactoryDto, options?: any): AxiosPromise<void> {
+            return localVarFp.apiV1AdminDestinationUpdatePost(udpateFactoryDto, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @param {FactoryDto} [factoryDto] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -926,6 +1117,17 @@ export const FactoryApiFactory = function (configuration?: Configuration, basePa
  * @extends {BaseAPI}
  */
 export class FactoryApi extends BaseAPI {
+    /**
+     * 
+     * @param {UdpateFactoryDto} [udpateFactoryDto] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof FactoryApi
+     */
+    public apiV1AdminDestinationUpdatePost(udpateFactoryDto?: UdpateFactoryDto, options?: AxiosRequestConfig) {
+        return FactoryApiFp(this.configuration).apiV1AdminDestinationUpdatePost(udpateFactoryDto, options).then((request) => request(this.axios, this.basePath));
+    }
+
     /**
      * 
      * @param {FactoryDto} [factoryDto] 

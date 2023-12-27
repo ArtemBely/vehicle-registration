@@ -40,10 +40,10 @@ export class Home extends Component {
                 <Container maxWidth="md" style={{ marginTop: '40px' }}>
                     <Paper sx={{ p: 4, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                         <Typography variant="h4" gutterBottom>
-                            Welcome to our Service
+                            Welcome to Vehicle Registration Service
                         </Typography>
                         <Typography variant="subtitle1" style={{ textAlign: 'center' }}>
-                            Explore the features available for different roles in our system.
+                            Explore the features available for different roles in the system.
                         </Typography>
 
                         <Grid container spacing={2} style={{ marginTop: '24px', marginBottom: '24px' }}>
@@ -58,7 +58,8 @@ export class Home extends Component {
                             {this.renderFeatureRow('Modify Part Names', false, true, true)}
                             {this.renderFeatureRow('Move Vehicles Between Factories', false, true, true)}
                             {this.renderFeatureRow('User Management', false, false, true)}
-                            {this.renderFeatureRow('View Overview Statistics', false, false, true)}
+                            {this.renderFeatureRow('Factory management', false, false, true)}
+                            {this.renderFeatureRow('Opportunity to appoint a director', false, false, true)}
                             {/* ... add more features as needed */}
                         </Grid>
 

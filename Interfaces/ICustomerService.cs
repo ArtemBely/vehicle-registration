@@ -6,7 +6,7 @@ namespace VehicleRegistration.Interfaces
 {
     public interface ICustomerService
     {
-        Task<List<ProfileDto>> GetCustomersAsync();
+        Task<List<ProfileDtoWithAdminStatus>> GetCustomersAsync();
 
         Task<ProfileDto> UpdateCustomerByEmailAsync(ProfileDto updatedCustomer);
 

@@ -5,6 +5,7 @@ import VehicleEditDialog from './VehicleEditDialog';
 import { useEffect, useState } from 'react';
 import { userApi } from '../api/user_api';
 import { factoryApi } from '../api/factory_api';
+import { useNavigate } from 'react-router-dom';
 
 const Vehicles = () => {
 
@@ -13,6 +14,7 @@ const Vehicles = () => {
     const [open, setOpen] = useState(false);
     const [isNew, setIsNew] = useState(false);
     const [currentVehicle, setCurrentVehicle] = useState({});
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -20,7 +22,9 @@ const Vehicles = () => {
                 const responseVehicles = await userApi.apiV1UserVehicleGet();
                 setVehicle(responseVehicles.data);
             } catch (error) {
-                console.error('Mistake in API request', error);
+                if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+                    navigate('/logon');
+                }
             }
         };
         const fetchFactories = async () => {
@@ -28,12 +32,14 @@ const Vehicles = () => {
                 const responseVehicles = await factoryApi.apiV1UserFactoriesGet();
                 setFactories(responseVehicles.data);
             } catch (error) {
-                console.error('Mistake in API request', error);
+                if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+                    navigate('/logon');
+                }
             }
         };
         fetchData();
         fetchFactories();
-    }, []);
+    }, [navigate]);
 
     const handleAddNew = () => {
         setCurrentVehicle({

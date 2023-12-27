@@ -27,7 +27,7 @@ namespace VehicleRegistration.Controllers
 
         [HttpGet]
         [Route("analytics/customers")]
-        public Task<List<ProfileDto>> GetAll()
+        public Task<List<ProfileDtoWithAdminStatus>> GetAll()
         {
             Console.WriteLine("customers...");
             return _customerService.GetCustomersAsync();

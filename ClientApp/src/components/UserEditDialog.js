@@ -1,9 +1,9 @@
-import React from 'react';
+﻿import React, { useEffect, useState } from 'react';
 import { Dialog, DialogActions, DialogContent, DialogTitle, TextField, Button } from '@mui/material';
 import { adminApi } from '../api/admin_api';
+import { registerApi } from '../api/register_api';
 
 const UserEditDialog = ({ open, handleClose, handleSave, currentUser, setCurrentUser, addingNewUser }) => {
-
 
     const signUp = async () => {
         try {
@@ -54,6 +54,17 @@ const UserEditDialog = ({ open, handleClose, handleSave, currentUser, setCurrent
             if (typeof window !== 'undefined') {
                 window.location.href = '/404';
             }
+        }
+    };
+
+    const makAnAdmin = async (userName) => {
+        try {
+            await registerApi.apiV1AuthMakeAdminPost({ userName });
+            if (typeof window != 'undefined') {
+                window.location.reload();
+            }
+        } catch (error) {
+            console.error('Mistake in API request', error);
         }
     };
 
@@ -119,8 +130,24 @@ const UserEditDialog = ({ open, handleClose, handleSave, currentUser, setCurrent
                 )}
             </DialogContent>
             <DialogActions>
+                <Button sx={{
+                    display: currentUser.isAdmin ? 'flex' : 'none',
+                    padding: '5px',
+                    backgroundColor: '#4caf50',
+                    color: 'white',
+                    textAlign: 'center',
+                    borderRadius: '4px',
+                    fontWeight: 'bold',
+                    '&:hover': {
+                        backgroundColor: '#4caf50',
+                        color: 'white',
+                    }
+                }}>
+                    ADMIN
+                </Button>
                 <Button onClick={handleClose}>Cancel</Button>
-                <Button onClick={addingNewUser ? signUp : editOne}>{addingNewUser ? 'Create' : 'Save'}</Button>
+                <Button onClick={addingNewUser ? signUp : editOne} variant="outlined">{addingNewUser ? 'Create' : 'Save'}</Button>
+                <Button onClick={() => makAnAdmin(currentUser.userName)} variant="contained" sx={{ display: addingNewUser || currentUser.isAdmin ? 'none' : 'flex' }}>Make an admin</Button>
                 <Button onClick={() => deleteOne(currentUser.email)} color="error" variant="outlined" sx={{ display: addingNewUser ? 'none' : 'flex' }}>Delete</Button>
             </DialogActions>
         </Dialog>

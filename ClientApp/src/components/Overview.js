@@ -1,13 +1,17 @@
 ﻿import React, { useEffect, useState } from 'react';
 import NavBar from './NavBar';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import { Box, CssBaseline, AppBar, Toolbar, Button, Typography, Container, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import { Box, CssBaseline, AppBar, Toolbar, Button, Typography, Paper } from '@mui/material';
 import { userApi } from '../api/user_api';
 import { factoryApi } from '../api/factory_api';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom';
 
 const Overview = () => {
     const [factories, setFactories] = useState([]);
     const [vehicles, setVehicle] = useState([]);
+    const navigate = useNavigate();
 
     // image type depends on auto type (skoda or other VW vehicles)
     let skodaWerk = ['KMQ20235', 'RAPID813', 'RAPID113', 'ELRQ3728'] // skoda werk type only
@@ -20,7 +24,9 @@ const Overview = () => {
                 const responseVehicles = await userApi.apiV1UserVehicleGet();
                 setVehicle(responseVehicles.data);
             } catch (error) {
-                console.error('Mistake in API request', error);
+                if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+                    navigate('/logon');
+                }
             }
         };
         const fetchFactories = async () => {
@@ -28,31 +34,53 @@ const Overview = () => {
                 const responseVehicles = await factoryApi.apiV1UserFactoriesGet();
                 setFactories(responseVehicles.data);
             } catch (error) {
-                console.error('Mistake in API request', error);
+                if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+                    navigate('/logon');
+                }
             }
         };
         fetchData();
         fetchFactories();
-    }, []);
+    }, [navigate]);
 
-    const onDragEnd = (result) => {
+    const handleFactories = async (factory_id, vehicle_id) => {
+        try {
+            await factoryApi.apiV1AdminDestinationUpdatePost({ factory_id, vehicle_id });
+        } catch (error) {
+            console.error('Mistake in API request', error);
+        }
+    }
+
+    const onDragEnd = async (result) => {
         const { source, destination } = result;
 
-        // Проверка на существование пункта назначения
         if (!destination) {
             return;
         }
 
-        // Проверка на перемещение элемента в новую позицию
-        if (
-            source.droppableId !== destination.droppableId ||
-            source.index !== destination.index
-        ) {
-            // Логика обновления состояния с новым расположением элемента
-            // ...
+        if (source.droppableId !== destination.droppableId ||
+            source.index !== destination.index) {
+
+            const vehicle_id = parseInt(result.draggableId);
+            const new_factory_id = parseInt(destination.droppableId);
+
+            try {
+                await handleFactories(new_factory_id, vehicle_id);
+                toast.success("Vehicle was successfully transferred!");
+
+                const updatedVehicles = vehicles.map(vehicle => {
+                    if (vehicle.id === vehicle_id) {
+                        return { ...vehicle, factory_id: new_factory_id };
+                    }
+                    return vehicle;
+                });
+                setVehicle(updatedVehicles);
+
+            } catch (error) {
+                toast.error("Something was wrong!");
+            }
         }
     };
-
 
 
     return (
@@ -66,8 +94,9 @@ const Overview = () => {
                 </Toolbar>
             </AppBar>
             <NavBar />
-       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-     <Toolbar />
+            <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+                <ToastContainer />
+                <Toolbar />
                 <DragDropContext onDragEnd={onDragEnd}>
                     {factories.map((factory, index) => (
                         <Droppable droppableId={String(factory.id)} key={factory.id}>
@@ -95,8 +124,9 @@ const Overview = () => {
                                                         ref={provided.innerRef}
                                                     >
                                                         <Paper style={{ padding: '10px' }}>
-                                                            <img src={skodaWerk.includes(vehicle.werk) ? skodaType : volkswagenType} alt={`Машина ${vehicle.carserie}`} style={{ width: '100%', marginBottom: '10px' }} />
+                                                            <img src={skodaWerk.includes(vehicle.werk) ? skodaType : volkswagenType} alt={`Car type ${vehicle.carserie}`} style={{ width: '100%', marginBottom: '10px' }} />
                                                             <Typography>{vehicle.carserie}</Typography>
+                                                            <Typography>{vehicle.carbody}</Typography>
                                                         </Paper>
                                                     </Box>
                                                 )}

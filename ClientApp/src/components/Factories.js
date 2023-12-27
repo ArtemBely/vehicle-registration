@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import FactoryEditDialog from './FactoryEditDialog';
 import { factoryApi } from '../api/factory_api';
 import { adminApi } from '../api/admin_api';
+import { useNavigate } from 'react-router-dom';
 
 const Factories = () => {
 
@@ -14,6 +15,7 @@ const Factories = () => {
     const [isNew, setIsNew] = useState(false);
     const [open, setOpen] = useState(false);
     const [currentFactory, setCurrentFactory] = useState({});
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (typeof window != undefined) {
@@ -25,7 +27,9 @@ const Factories = () => {
                 const responseFactories = await factoryApi.apiV1UserFactoriesGet();
                 setFactories(responseFactories.data);
             } catch (error) {
-                console.error('Mistake in API request', error);
+                if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+                    navigate('/logon');
+                }
             }
         };
         const fetchUsers = async () => {
@@ -33,12 +37,14 @@ const Factories = () => {
                 const responseCustomers = await adminApi.apiV1AdminAnalyticsCustomersGet();
                 setUsers(responseCustomers.data);
             } catch (error) {
-                console.error('Mistake in API request', error);
+                //if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+                //    navigate('/logon');
+                //}
             }
         };
         fetchData();
         fetchUsers();
-    }, []);
+    }, [navigate]);
 
     const handleAddNew = () => {
         setCurrentFactory({

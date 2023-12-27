@@ -80,5 +80,19 @@ namespace VehicleRegistration.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("admin/destination/update")]
+        [Authorize(Roles = RolesConstant.ADMIN)]
+        public async Task<IActionResult> UpdateFactoryForVehicle([FromBody] UdpateFactoryDto udpateFactoryDto)
+        {
+            bool result = await _factoryService.UpdateFactoryForVehicle(udpateFactoryDto);
+            if (!result)
+            {
+                return NotFound();
+            }
+            return Ok();
+
+        }
+
     }
 }
