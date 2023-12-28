@@ -11,7 +11,6 @@ namespace VehicleRegistration.Controllers
 {
     [Route("/api/v1/admin")]
     [ApiController]
-    [Authorize(Roles = RolesConstant.ADMIN)]
     public class CustomerAnalyticsController : Controller
     {
 
@@ -27,6 +26,7 @@ namespace VehicleRegistration.Controllers
 
         [HttpGet]
         [Route("analytics/customers")]
+        [Authorize(Roles = RolesConstant.ADMIN)]
         public Task<List<ProfileDtoWithAdminStatus>> GetAll()
         {
             Console.WriteLine("customers...");
@@ -35,6 +35,7 @@ namespace VehicleRegistration.Controllers
 
         [HttpPut]
         [Route("analytics/customers/update")]
+        [Authorize(Roles = RolesConstant.USER)]
         public async Task<IActionResult> UpdateCustomer([FromBody] ProfileDto updatedCustomer)
         {
             if (!ModelState.IsValid)
@@ -62,6 +63,7 @@ namespace VehicleRegistration.Controllers
 
         [HttpPost]
         [Route("analytics/customers/create")]
+        [Authorize(Roles = RolesConstant.ADMIN)]
         public async Task<IActionResult> Register([FromBody] CustomerDto customerDto)
         {
             var registerResult = await _authService.RegisterAsync(customerDto);
@@ -74,6 +76,7 @@ namespace VehicleRegistration.Controllers
 
         [HttpDelete]
         [Route("analytics/customers/delete")]
+        [Authorize(Roles = RolesConstant.ADMIN)]
         public async Task<IActionResult> DeleteCustomer([FromQuery] string email)
         {
             if (!ModelState.IsValid)

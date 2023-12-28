@@ -5,6 +5,7 @@ import {
 import NavBar from './NavBar';
 import { useNavigate } from 'react-router-dom';
 import { userApi } from '../api/user_api';
+import { adminApi } from '../api/admin_api';
 
 const Account = () => {
 
@@ -38,21 +39,28 @@ const Account = () => {
         fetchData();
     }, [navigate]);
 
-    const handleSave = async () => {
-        try {
-            const response = await userApi.updateUser(currentUser);
-            if (response.ok) {
-                localStorage.setItem('activeUser', JSON.stringify(currentUser));
-            } else {
-            }
-        } catch (error) {
-            console.error('Error updating user', error);
-        }
-    };
-
     const handleChange = (event) => {
         const { name, value } = event.target;
         setCurrentUser({ ...currentUser, [name]: value });
+    };
+
+    const editOne = async () => {
+        try {
+            const response = await adminApi.apiV1AdminAnalyticsCustomersUpdatePut({
+                email: currentUser.email,
+                FirstName: currentUser.name,
+                surname: currentUser.surname,
+                phoneNumber: currentUser.phonenumber
+            });
+            localStorage.setItem('activeUser', JSON.stringify(currentUser));
+            window.location.reload();
+            if (response.ok) {
+            } else {
+                throw new Error('Please check your email and password');
+            }
+        } catch (err) {
+            console.error(err);
+        }
     };
 
     return (
@@ -114,6 +122,9 @@ const Account = () => {
                             onChange={handleChange}
                             margin="normal"
                             fullWidth
+                            InputProps={{
+                                readOnly: true,
+                            }}
                         />
                         <TextField
                             label="Phone Number"
@@ -125,7 +136,7 @@ const Account = () => {
                         />
                         <Button
                             variant="contained"
-                            onClick={handleSave}
+                            onClick={editOne}
                             sx={{ mt: 3 }}
                         >
                             Save Changes

@@ -50,14 +50,11 @@ builder.Services.AddCors(options =>
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-//delete when implement DB
-builder.Services.AddTransient<IPostService, PostService>();
 builder.Services.AddTransient<IRoleService, RoleService>();
 builder.Services.AddTransient<IAuthService, AuthService>();
 builder.Services.AddTransient<ICustomerService, CustomerAnalytics>();
 builder.Services.AddTransient<IVehicleService, VehicleService>();
 builder.Services.AddTransient<IFactoryService, FactoryService>();
-builder.Services.AddSingleton<AutoDataContext>();
 
 //JWT implementation
 builder.Services

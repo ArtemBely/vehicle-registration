@@ -47,33 +47,30 @@ export class Home extends Component {
                         </Typography>
 
                         <Grid container spacing={2} style={{ marginTop: '24px', marginBottom: '24px' }}>
-                            {/* Header Row */}
                             <Grid item xs={4}><Typography variant="h6">Feature</Typography></Grid>
                             <Grid item xs={2}><Typography variant="h6" align="center">Guest</Typography></Grid>
                             <Grid item xs={3}><Typography variant="h6" align="center">Manager</Typography></Grid>
                             <Grid item xs={3}><Typography variant="h6" align="center">Admin</Typography></Grid>
 
-                            {/* Feature Rows */}
                             {this.renderFeatureRow('View Welcome Page', true, true, true)}
                             {this.renderFeatureRow('Modify Part Names', false, true, true)}
                             {this.renderFeatureRow('Move Vehicles Between Factories', false, true, true)}
                             {this.renderFeatureRow('User Management', false, false, true)}
                             {this.renderFeatureRow('Factory management', false, false, true)}
                             {this.renderFeatureRow('Opportunity to appoint a director', false, false, true)}
-                            {/* ... add more features as needed */}
                         </Grid>
 
                         <Box style={{ display: 'flex', gap: '20px', marginTop: '20px' }}>
                             <Button variant="contained" color="primary" component={NavLink} to="/logon" sx={{
                                 '&:hover': {
-                                    color: 'white' // Keep the text color white
+                                    color: 'white'
                                 }
                             }} >
                                 Login
                             </Button>
                         <Button variant="contained" color="secondary" component={NavLink} to="/registration" sx={{
                             '&:hover': {
-                                color: 'white' // Keep the text color white
+                                color: 'white'
                             }
                         }} >
                                 Register

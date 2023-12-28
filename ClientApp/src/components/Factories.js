@@ -37,9 +37,6 @@ const Factories = () => {
                 const responseCustomers = await adminApi.apiV1AdminAnalyticsCustomersGet();
                 setUsers(responseCustomers.data);
             } catch (error) {
-                //if (error.response && (error.response.status === 401 || error.response.status === 403)) {
-                //    navigate('/logon');
-                //}
             }
         };
         fetchData();
@@ -66,7 +63,6 @@ const Factories = () => {
     };
 
     const handleSave = () => {
-        // Save logic...
         setOpen(false);
     };
 

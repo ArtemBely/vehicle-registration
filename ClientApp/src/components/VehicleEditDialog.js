@@ -234,33 +234,6 @@ const VehicleEditDialog = ({ open, vehicle, handleClose, handleSave, currentVehi
                     renderInput={(params) => <TextField {...params} label="Factory" margin="dense" />}
                     sx={{ display: isAdmin ? 'flex' : 'none' }}
                 />
-
-                {/*<Autocomplete*/}
-                {/*    value={currentVehicle.factory_id || ''}*/}
-                {/*    onChange={(event, newValue) => {*/}
-                {/*        setCurrentVehicle(prevState => ({*/}
-                {/*            ...prevState,*/}
-                {/*            factory_id: newValue*/}
-                {/*        }));*/}
-                {/*    }}*/}
-                {/*    options={factoryIdOptions}*/}
-                {/*    getOptionLabel={(option) => option.toString()}*/}
-                {/*    renderInput={(params) => <TextField {...params} label="Factory ID" margin="dense" />}*/}
-                {/*    fullWidth*/}
-                {/*/>*/}
-
-                {/*<Autocomplete*/}
-                {/*    value={currentVehicle.factory_id || ''}*/}
-                {/*    options={factories}*/}
-                {/*    getOptionLabel={(option) => option.id}*/}
-                {/*    renderInput={(params) => <TextField {...params} label="Factory ID" margin="dense" />}*/}
-                {/*        onChange={(event, newValue) => {*/}
-                {/*            setCurrentVehicle(prevState => ({*/}
-                {/*                ...prevState,*/}
-                {/*                factory_id: newValue*/}
-                {/*            }));*/}
-                {/*        }}*/}
-                {/*/>*/}
             </DialogContent>
             <DialogActions>
                 <Button

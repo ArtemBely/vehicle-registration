@@ -15,13 +15,10 @@ namespace VehicleRegistration.Controllers
     public class VehicleController : ControllerBase
     {
 
-        private IPostService _postService;
-
         private IVehicleService _vehicleService;
 
-        public VehicleController(IPostService postService, IVehicleService vehicleService)
+        public VehicleController(IVehicleService vehicleService)
         {
-            _postService = postService;
             _vehicleService = vehicleService;
         }
 

@@ -49,6 +49,7 @@
 
   <ItemGroup>
     <Folder Include="ClientApp\public\auto\" />
+    <Folder Include="ClientApp\public\static\postman\" />
     <Folder Include="ClientApp\scripts\" />
     <Folder Include="ClientApp\src\api\" />
     <Folder Include="Migrations\" />
